@@ -1,6 +1,6 @@
 # TalkMED 搜索工具
 
-🏥 一个强大的 TalkMED 医学内容搜索命令行工具，支持搜索课程和会议内容。
+🏥  TalkMED 医学站点内容搜索命令行工具，支持搜索课程和会议内容。
 
 ## 功能特性
 
@@ -146,14 +146,6 @@ npm start "搜索关键词"
 - **Axios**: HTTP 客户端
 - **Chalk**: 终端颜色输出
 - **Readline**: 交互式输入处理
-
-## API 接口
-
-本工具使用 TalkMED 官方搜索 API：
-
-- **基础 URL**: `https://api.talkmed.cn`
-- **搜索端点**: `/api/search`
-- **支持参数**: `word`, `type`, `page`
 
 ## 许可证
 
