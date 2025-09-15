@@ -1,0 +1,216 @@
+{
+  "mcpVersion": "2024-11-05",
+  "name": "talkmed-search",
+  "version": "1.0.0",
+  "description": "TalkMED 医学内容搜索工具 - 通过命令行搜索医学课程和会议内容",
+  "author": "ray.lei",
+  "license": "MIT",
+  "homepage": "https://github.com/YOUR_USERNAME/talkmed-search",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/talkmed-search.git"
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "search_medical_content",
+        "description": "搜索 TalkMED 平台的医学内容，包括课程和会议",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "keyword": {
+              "type": "string",
+              "description": "搜索关键词"
+            },
+            "type": {
+              "type": "string",
+              "enum": ["all", "course", "live"],
+              "default": "all",
+              "description": "内容类型：all(全部)、course(课程)、live(会议)"
+            },
+            "page": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "description": "页码"
+            }
+          },
+          "required": ["keyword"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean",
+              "description": "搜索是否成功"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "courses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {"type": "string"},
+                      "title": {"type": "string"},
+                      "price": {"type": "string"},
+                      "studentCount": {"type": "string"},
+                      "tags": {"type": "array", "items": {"type": "string"}},
+                      "url": {"type": "string"}
+                    }
+                  }
+                },
+                "lives": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {"type": "string"},
+                      "title": {"type": "string"},
+                      "subtitle": {"type": "string"},
+                      "time": {"type": "string"},
+                      "status": {"type": "string"},
+                      "tags": {"type": "array", "items": {"type": "string"}},
+                      "url": {"type": "string"}
+                    }
+                  }
+                },
+                "pagination": {
+                  "type": "object",
+                  "properties": {
+                    "currentPage": {"type": "integer"},
+                    "totalPages": {"type": "integer"},
+                    "totalResults": {"type": "integer"}
+                  }
+                }
+              }
+            },
+            "error": {
+              "type": "string",
+              "description": "错误信息（如果有）"
+            }
+          }
+        }
+      }
+    ],
+    "resources": [
+      {
+        "uri": "talkmed://api/search",
+        "name": "TalkMED 搜索 API",
+        "description": "TalkMED 平台的搜索接口",
+        "mimeType": "application/json"
+      }
+    ],
+    "prompts": [
+      {
+        "name": "medical_search_assistant",
+        "description": "医学内容搜索助手",
+        "arguments": [
+          {
+            "name": "query",
+            "description": "用户的搜索查询",
+            "required": true
+          },
+          {
+            "name": "specialty",
+            "description": "医学专科领域",
+            "required": false
+          }
+        ]
+      }
+    ]
+  },
+  "runtime": {
+    "node": ">=16.0.0"
+  },
+  "installation": {
+    "npm": "talkmed-search-mcp",
+    "command": "npx talkmed-search-mcp"
+  },
+  "configuration": {
+    "apiEndpoint": {
+      "type": "string",
+      "default": "https://api.talkmed.cn/api/search",
+      "description": "TalkMED API 端点"
+    },
+    "timeout": {
+      "type": "integer",
+      "default": 10000,
+      "description": "请求超时时间（毫秒）"
+    },
+    "maxResults": {
+      "type": "integer",
+      "default": 20,
+      "description": "每页最大结果数"
+    }
+  },
+  "keywords": [
+    "medical",
+    "healthcare",
+    "search",
+    "talkmed",
+    "education",
+    "courses",
+    "conferences",
+    "mcp",
+    "cli"
+  ],
+  "categories": [
+    "medical",
+    "education",
+    "search",
+    "healthcare"
+  ],
+  "usage": {
+    "examples": [
+      {
+        "description": "搜索心脏病相关内容",
+        "command": "npx talkmed-search-mcp \"心脏病\"",
+        "parameters": {
+          "keyword": "心脏病",
+          "type": "all"
+        }
+      },
+      {
+        "description": "只搜索课程",
+        "command": "npx talkmed-search-mcp \"糖尿病\" --type course",
+        "parameters": {
+          "keyword": "糖尿病",
+          "type": "course"
+        }
+      },
+      {
+        "description": "搜索会议内容",
+        "command": "npx talkmed-search-mcp \"外科手术\" --type live",
+        "parameters": {
+          "keyword": "外科手术",
+          "type": "live"
+        }
+      },
+      {
+        "description": "交互式搜索",
+        "command": "npx talkmed-search-mcp \"医学影像\" --interactive",
+        "parameters": {
+          "keyword": "医学影像",
+          "interactive": true
+        }
+      }
+    ]
+  },
+  "security": {
+    "permissions": [
+      "network.http"
+    ],
+    "dataHandling": {
+      "collectsPersonalData": false,
+      "storesData": false,
+      "sharesData": false
+    }
+  },
+  "support": {
+    "documentation": "https://github.com/YOUR_USERNAME/talkmed-search#readme",
+    "issues": "https://github.com/YOUR_USERNAME/talkmed-search/issues",
+    "contact": "ray.lei@example.com"
+  }
+}

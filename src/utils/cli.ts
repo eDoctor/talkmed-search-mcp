@@ -48,6 +48,7 @@ export class CLIParser {
     
     try {
       await searchService.performSearch(keyword, cliOptions);
+      process.exit(0); // 成功执行后正常退出
     } catch (error) {
       console.error('搜索失败:', error instanceof Error ? error.message : '未知错误');
       process.exit(1);

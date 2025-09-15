@@ -61,13 +61,13 @@ export class SearchService {
     keyword: string, 
     searchType: string
   ): SearchResultSummary {
-    const courses = response.data.course?.items || [];
-    const lives = response.data.live?.items || [];
+    const courses = response.data.data || []; // API 返回的课程数组
+    const lives: any[] = []; // 目前 API 只返回课程，没有会议数据
     
     const pagination: PaginationInfo = {
-      currentPage: 1, // API 暂不返回当前页码，默认为 1
-      hasMore: response.data.course?.has_more || false,
-      totalDisplayed: courses.length + lives.length
+      currentPage: response.data.current_page,
+      hasMore: response.data.has_more,
+      totalDisplayed: courses.length
     };
 
     return {
@@ -148,5 +148,49 @@ export class SearchService {
    */
   public async testConnection(): Promise<boolean> {
     return await this.api.testConnection();
+  }
+
+  /**
+   * 为 MCP 执行搜索并返回结构化数据
+   * @param keyword 搜索关键词
+   * @param options CLI 选项
+   * @returns 结构化的搜索结果
+   */
+  public async performSearchForMCP(keyword: string, options: CLIOptions): Promise<any> {
+    try {
+      const searchRequest: SearchRequest = {
+        word: keyword,
+        type: options.type,
+        page: options.page
+      };
+
+      const response = await this.api.search(searchRequest);
+      const summary = this.processSearchResponse(response, keyword, options.type || 'all');
+
+      return {
+         success: true,
+         keyword,
+         searchType: options.type || 'all',
+         page: options.page || 1,
+         results: {
+           courses: summary.courses,
+           lives: summary.lives,
+           pagination: summary.pagination,
+           totalResults: summary.courses.length + summary.lives.length
+         },
+         hasResults: this.hasResults(summary)
+       };
+
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '搜索失败';
+      return {
+        success: false,
+        keyword,
+        searchType: options.type || 'all',
+        page: options.page || 1,
+        error: errorMessage,
+        hasResults: false
+      };
+    }
   }
 }

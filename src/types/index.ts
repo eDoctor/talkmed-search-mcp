@@ -9,16 +9,12 @@ export interface SearchRequest {
 export interface SearchResponse {
   code: number;
   data: {
-    course?: {
-      title: string;
-      items: CourseItem[];
-      has_more: boolean;
-    };
-    live?: {
-      title: string;
-      items: LiveItem[];
-    };
+    has_more: boolean;
+    data: CourseItem[]; // API 返回的是课程数组
+    current_page: number;
+    last_page: number;
   };
+  message: string;
 }
 
 // 课程项目接口

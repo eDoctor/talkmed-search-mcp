@@ -74,7 +74,7 @@ export class TalkMEDAPI {
         { params }
       );
 
-      if (response.data.code !== 200) {
+      if (response.data.code !== 0) {
         throw new Error(`API 返回错误代码: ${response.data.code}`);
       }
 

@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "talkmed-search": {
+      "command": "npx",
+      "args": ["talkmed-search-mcp"],
+      "env": {},
+      "description": "TalkMED 医学内容搜索工具",
+      "capabilities": ["tools"],
+      "metadata": {
+        "name": "TalkMED Search",
+        "version": "1.0.0",
+        "author": "ray.lei",
+        "homepage": "https://www.npmjs.com/package/talkmed-search-mcp"
+      }
+    }
+  }
+}
